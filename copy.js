@@ -7,10 +7,12 @@ function copy(source, target, targetDuplicates, callback) {
     //Record start time
     let startTime = Date.now();
 
-    //Join the paths
-    source = path.join(__dirname, source);
-    target = path.join(__dirname, target);
-    targetDulplicates = path.join(__dirname, targetDuplicates);
+    //Join the paths, unless they are absolute
+    source = path.isAbsolute(source) ? source : path.join(__dirname, source);
+    target = path.isAbsolute(target) ? target : path.join(__dirname, target);
+    targetDulplicates = path.isAbsolute(targetDuplicates) ? targetDuplicates : path.join(__dirname, targetDuplicates);
+
+    console.log(source, target, targetDuplicates);
 
     //Show scanning message
     console.log("Scanning Existing Files");
@@ -73,14 +75,17 @@ function copy(source, target, targetDuplicates, callback) {
                 var newFiles = [];
                 //Loop throught the files
                 files.forEach(file => {
-                    //Check if duplicate
-                    if (existingFiles.includes(file.name)) {
-                        duplicateCount++;
-                        duplicateFiles.push(file.name);
-                    }
-                    else {
-                        newFileCount++;
-                        newFiles.push(file.name);
+                    //Make sure it is a file and not a folder
+                    if (file.isFile()) {
+                        //Check if duplicate
+                        if (existingFiles.includes(file.name)) {
+                            duplicateCount++;
+                            duplicateFiles.push(file.name);
+                        }
+                        else {
+                            newFileCount++;
+                            newFiles.push(file.name);
+                        }
                     }
                 });
 

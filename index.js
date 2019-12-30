@@ -1,3 +1,6 @@
 const copy = require("./copy");
 
-copy("./phone/photos", "./pc/photos/after", "./pc/photos", err => {});
+copy(
+    String.raw`C:\Users\rajas\Desktop\Test\So`,
+    String.raw`C:\Users\rajas\Desktop\Test\latest`,
+    String.raw`C:\Users\rajas\Desktop\Test\march`, err => { });
